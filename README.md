@@ -35,7 +35,7 @@ This code base is built on:
         }
     }).then(resp => { cb(null, resp)}).catch(err => cb(err, null));
 ```
-* Sample response
+* Sample response as below. In this case, we can have all counts of posting categories (Fashion, Vehicle, Real Estate, ...) returned in a single trip to Elasticsearch server.
 ```javascript
     { 
         took: 15,

@@ -6,6 +6,7 @@ This code base is built on:
 
 ## Use cases
 * [Get document counts (same index, different categories)](#docCount)
+* [Search for multi-field, nested-category document](#search)
 
 ### Get document counts (same index, different categories)<a name="docCount"></a>
 * Query and filter
@@ -57,4 +58,51 @@ This code base is built on:
         }
     }
 ```
-* More  about aggregations can be found in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-aggregations.html" target="_blank">Elasticsearch official document</a>.
+* More  about 5.x aggregations can be found in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-aggregations.html" target="_blank">Elasticsearch official document</a>.
+
+
+### Search for multi-field, nested-category document<a name="search"></a>
+* Build your document schema
+* Use query tring to take advantage of built in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-query-string-query.html" target="_blank">Elasticsearch query parser</a>.
+```javascript
+    const keyword = { query_string: { query: 'nike shoes' } };
+```
+* Build your filter for muti-field, nested-category filter. In this example, nested categories are `locations` and `topics`
+```javascript
+    const filter = { bool: { should: [ 
+        { bool: { must: [ 
+            { range: { air: { gte: 1517795104902 } } },
+            { term: { sellType: 'owner' } },
+            { range: { price: { gte: 80, lte: 150 } } },
+            { term: { locations: 'nation_wide' } },
+            { term: { locCount: 1 } },
+            { term: { topics: 'shoes' } } 
+        ] } },
+        { bool: { must: [
+            { range: { air: { gte: 1517795104902 } } },
+            { term: { sellType: 'owner' } },
+            { range: { price: { gte: 80, lte: 150 } } },
+            { term: { locations: 'nation_wide' } },
+            { term: { locations: 'california' } },
+            { term: { topics: 'shoes' } } 
+        ] } }
+    ] } };
+```
+* Issue search query to Elasticsearch server.
+```javascript
+    post.search({ bool: {
+        must    : keyword,
+        filter  : filter,
+    }}, {
+        size    : 10, // number of returned results
+        from    : 0, // return from result 0. These two can be apply to create paging
+        sort    : { createdAt: { order: 'desc' } }, // sort your result
+        _source: ['title','url','price','photos','board'], // control returned fields
+    }, function(err, searchRes) {
+        if(err) { cb(err, null) } else { cb(null, {
+            found       : searchRes.hits.total, 
+            searchTime  : searchRes.took, 
+            resList     : searchRes.hits.hits
+        })}
+    });
+```

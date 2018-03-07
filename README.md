@@ -111,7 +111,7 @@ This code base is built on:
 
 
 ### Multiple searches in one trip query<a name="msearch"></a>
-* Construct your search with multiple queries and indeces.
+* Construct your search with multiple queries and indices.
 ```javascript
     esClient.msearch({
         body: [
@@ -169,4 +169,4 @@ This code base is built on:
         }
     ] }
 ```
-* More about `multi search` can be found on <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/multi-search-template.html" target="_blank">Elasticsearch official document</a>.
+* More about 5.x `multi search` can be found on <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/multi-search-template.html" target="_blank">Elasticsearch official document</a>.

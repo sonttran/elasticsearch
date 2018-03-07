@@ -1,4 +1,4 @@
-# Some frequently used cases Elasticsearch
+# Some frequently used cases with Elasticsearch
 This code base is built on:
 * <a href="https://www.elastic.co/" target="_blank">Elasticsearch</a> 5.4
 * Node.js <a href="https://github.com/sonttran/server" target="_blank">Vpop server</a> with <a href="https://www.npmjs.com/package/mongoosastic" target="_blank">Mongoosastic</a> module
@@ -20,7 +20,7 @@ This code base is built on:
         emtertainment   : { match: { topics: 'emtertainment' } }
     };
     
-    const filter = { range: { air: { gte: 1517778314240 } } };
+    const filter = { range: { air: { gte: 1517778314240 } } }; // 30 days back from now
 ```
 * Elasticsearch client query
 ```javascript

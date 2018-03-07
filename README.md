@@ -146,21 +146,21 @@ This code base is built on:
 * With this one trip to Elasticsearch server, you will have multiple search results returned with same order in your search structure. Example response:
 ```javascript
     { responses: [ 
-        {
+        {  // response for first query
             took        : 2,
             timed_out   : false,
             _shards     : [Object],
             hits        : [Object],
             status      : 200 
         },
-        { 
+        {  // response for second query
             took        : 0,
             timed_out   : false,
             _shards     : [Object],
             hits        : [Object],
             status: 200 
         },
-        { 
+        {  // response for third query
             took        : 1,
             timed_out   : false,
             _shards     : [Object],

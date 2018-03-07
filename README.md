@@ -7,6 +7,7 @@ This code base is built on:
 ## Use cases
 * [Get document counts (same index, different categories)](#docCount)
 * [Search for multi-field, nested-category document](#search)
+* [Multiple searches in one trip query](#msearch)
 
 ### Get document counts (same index, different categories)<a name="docCount"></a>
 * Query and filter
@@ -106,3 +107,7 @@ This code base is built on:
         })}
     });
 ```
+* More  about 5.x `bool query` can be found in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-bool-query.html" target="_blank">Elasticsearch official document</a>.
+
+
+### Multiple searches in one trip query<a name="msearch"></a>

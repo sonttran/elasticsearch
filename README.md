@@ -1,6 +1,6 @@
 # Some frequently used cases with Elasticsearch
 This code base is built on:
-* <a href="https://www.elastic.co/" target="_blank">Elasticsearch</a> 5.4
+* <a href="https://www.elastic.co/" target="_blank">Elasticsearch</a> 5.5
 * Node.js <a href="https://github.com/sonttran/server" target="_blank">Vpop server</a> with <a href="https://www.npmjs.com/package/mongoosastic" target="_blank">Mongoosastic</a> module
 * Context: commercial website with postings. Search filters are nested categories, price range, flags.
 

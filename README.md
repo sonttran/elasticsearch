@@ -59,12 +59,12 @@ This code base is built on:
         }
     }
 ```
-* More  about 5.x aggregations can be found in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-aggregations.html" target="_blank">Elasticsearch official document</a>.
+* More  about 5.x `aggregations` can be found in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-aggregations.html" target="_blank">Elasticsearch official document</a>.
 
 
 ### Search for multi-field, nested-category document<a name="search"></a>
 * Build your document schema
-* Use query tring to take advantage of built in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-query-string-query.html" target="_blank">Elasticsearch query parser</a>.
+* Use `query_tring` to take advantage of built in <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-query-string-query.html" target="_blank">Elasticsearch query parser</a>.
 ```javascript
     const keyword = { query_string: { query: 'nike shoes' } };
 ```
@@ -111,3 +111,62 @@ This code base is built on:
 
 
 ### Multiple searches in one trip query<a name="msearch"></a>
+* Construct your search with multiple queries and indeces.
+```javascript
+    esClient.msearch({
+        body: [
+            { index: 'blogs', type: 'blog' }, //  first query
+            {
+                size: 6, 
+                query : { match: { air: true }},
+                sort : [ { createdAt : { order : 'desc' }}], 
+                _source: ['title','url',],
+            },
+            { index: 'blogs', type: 'blog' }, // second query, can search with different index too
+            {
+                size: 8, 
+                query : {bool:{must:[{match:{type:'introduction'}},{match:{air:true}}]}},
+                sort : [ { createdAt : { order : 'desc' }}],
+                _source: ['title','url'],
+            },
+            { index: 'blogs', type: 'blog' }, // third query
+            {
+                size: 12, 
+                query : {bool:{must:[{match:{type:'announcement'}},{match:{air:true}}]}},
+                sort : [ { createdAt : { order : 'desc' }}],
+                _source: ['title','url'],
+            },
+        ]
+    }).then(result => {
+        cb(null, result);
+    }).catch(err => {
+        cb(err, null);
+    });
+```
+* With this one trip to Elasticsearch server, you will have multiple search results returned with same order in your search structure. Example response:
+```javascript
+    { responses: [ 
+        {
+            took        : 2,
+            timed_out   : false,
+            _shards     : [Object],
+            hits        : [Object],
+            status      : 200 
+        },
+        { 
+            took        : 0,
+            timed_out   : false,
+            _shards     : [Object],
+            hits        : [Object],
+            status: 200 
+        },
+        { 
+            took        : 1,
+            timed_out   : false,
+            _shards     : [Object],
+            hits        : [Object],
+            status      : 200 
+        }
+    ] }
+```
+* More about `multi search` can be found on <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/multi-search-template.html" target="_blank">Elasticsearch official document</a>.
